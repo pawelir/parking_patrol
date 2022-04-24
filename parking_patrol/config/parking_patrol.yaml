@@ -1,0 +1,5 @@
+/**:
+  ros__parameters:
+    spot_width: 0.4
+    spot_depth: 0.8
+    lidar_angular_resolution: 1.0

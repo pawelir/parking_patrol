@@ -1,0 +1,8 @@
+---
+geometry_msgs/Pose[] left_side_spots
+geometry_msgs/Pose[] right_side_spots
+int32 result_code
+string result_string
+#Possible statuses
+int32 REJECTED = 0
+int32 SUCCEDED = 1
