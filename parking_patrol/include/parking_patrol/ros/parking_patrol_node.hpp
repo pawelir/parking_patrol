@@ -27,8 +27,8 @@ private:
 
   std::map<std::string, float> orientation_map_{
       {direction::UP, 0.0},
-      {direction::DOWN, -1.0},
-      {direction::TOLERANCE, 0.1},
+      {direction::DOWN, 1.0},
+      {direction::TOLERANCE, 0.04},
   };
 
   std::pair<std::vector<MsgPoint>, std::vector<MsgPoint>>

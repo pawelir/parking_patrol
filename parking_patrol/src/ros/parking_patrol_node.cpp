@@ -64,20 +64,21 @@ ParkingPatrolNode::match_detections_to_columns(
   std::vector<MsgPoint> right_column_spots;
 
   for (auto detection : detections.at(side::LEFT)) {
-    if (abs(detection.theta - orientation_map_.at(direction::UP)) <=
+    if (abs(abs(detection.theta) - orientation_map_.at(direction::UP)) <=
         orientation_map_.at(direction::TOLERANCE)) {
       left_column_spots.push_back(msg_point_from_detection(detection));
-    } else if (abs(detection.theta - orientation_map_.at(direction::DOWN)) <=
+    } else if (abs(abs(detection.theta) - orientation_map_.at(direction::DOWN)) <=
                orientation_map_.at(direction::TOLERANCE)) {
       right_column_spots.push_back(msg_point_from_detection(detection));
+      std::cout << "2" << std::endl;
     }
   }
 
   for (auto detection : detections.at(side::RIGHT)) {
-    if (abs(detection.theta - orientation_map_.at(direction::UP)) <=
+    if (abs(abs(detection.theta) - orientation_map_.at(direction::UP)) <=
         orientation_map_.at(direction::TOLERANCE)) {
       right_column_spots.push_back(msg_point_from_detection(detection));
-    } else if (abs(detection.theta - orientation_map_.at(direction::DOWN)) <=
+    } else if (abs(abs(detection.theta) - orientation_map_.at(direction::DOWN)) <=
                orientation_map_.at(direction::TOLERANCE)) {
       left_column_spots.push_back(msg_point_from_detection(detection));
     }
