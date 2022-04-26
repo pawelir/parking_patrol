@@ -16,9 +16,9 @@ int main(int argc, char *argv[]) {
 
   rclcpp::executors::MultiThreadedExecutor executor;
   auto spot_finder_node = std::make_shared<SpotFinderNode>();
-  // auto parking_patrol_node = std::make_shared<ParkingPatrolNode>(spot_finder_node);
+  auto parking_patrol_node = std::make_shared<ParkingPatrolNode>(spot_finder_node);
   executor.add_node(spot_finder_node);
-  // executor.add_node(parking_patrol_node);
+  executor.add_node(parking_patrol_node);
   try {
     executor.spin();
   } catch (std::runtime_error &err){

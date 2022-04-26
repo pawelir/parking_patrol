@@ -1,5 +1,6 @@
 /**:
   ros__parameters:
+    lidar_angular_resolution: 1.0
     spot_width: 0.4
     spot_depth: 0.8
-    lidar_angular_resolution: 1.0
+    parking_spot_increment: 0.5

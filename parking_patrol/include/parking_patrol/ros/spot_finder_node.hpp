@@ -2,67 +2,79 @@
 #define PARKING_PATROL_SPOT_FINDER_NODE_HPP
 
 #include <rclcpp/rclcpp.hpp>
+#include <mutex>
+#include <geometry_msgs/msg/pose.hpp>
+#include <nav_msgs/msg/odometry.hpp>
+#include <sensor_msgs/msg/imu.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
-#include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
+#include <std_msgs/msg/string.hpp>
 
 namespace parkingpatrol {
+using MsgImu = sensor_msgs::msg::Imu;
 using MsgLaserScan = sensor_msgs::msg::LaserScan;
-using MsgLaserScan = sensor_msgs::msg::LaserScan;
-using MsgPoseWithCovarience = geometry_msgs::msg::PoseWithCovarianceStamped;
 using MsgPose = geometry_msgs::msg::Pose;
+using MsgOdom = nav_msgs::msg::Odometry;
 
-namespace sectors {
+namespace side {
 static constexpr char LEFT[] = "LEFT";
 static constexpr char RIGHT[] = "RIGHT";
-}// namespace sectors
+}// namespace side
+
+struct SpotDetectionPose {
+  SpotDetectionPose (float x, float y, float theta)
+    : x(x), y(y), theta(theta) {}
+  float x;
+  float y;
+  float theta;
+};
 
 class SpotFinderNode : public rclcpp::Node {
 
  public:
   SpotFinderNode();
 
-  void clear_poses_buffer();
+  void clear_detection_buffer();
     
-  std::map<std::string, std::vector<MsgPose>> get_poses();
+  std::map<std::string, std::vector<SpotDetectionPose>> get_detections();
  
  private:
   void declare_parameters();
 
-  void calculate_sector_map();
+  void calculate_lidar_range_map();
+  
+  void odom_cb(const std::shared_ptr<MsgOdom> msg);
 
   void laser_scan_cb(const std::shared_ptr<MsgLaserScan> msg);
 
-  void amcl_pose_cb(const std::shared_ptr<MsgPoseWithCovarience> msg);
-
-  std::vector<float> get_sector_readings(const std::string &sector_name,
+  std::vector<float> select_readings(const std::string &side_name,
                                          const std::vector<float> &lidar_readings);
 
-  // void free_spots_cb(const std::shared_ptr<SrvFreeSpots::Request> req,
-  //                    const std::shared_ptr<SrvFreeSpots::Response> res);
+  void imu_cb(const std::shared_ptr<MsgImu> msg);
 
   void timer_callback();
 
   bool detected_free_spot(const std::vector<float> &laser_readings);
 
-  double spot_depth_;
-  double spot_width_;
-  double lidar_angular_resolution_;
-  std::map<std::string, std::array<int, 2>> sector_map_;
+  float spot_depth_;
+  float lidar_angular_resolution_;
+  std::map<std::string, std::array<int, 2>> lidar_range_map_;
 
-  std::vector<MsgPose> free_spots_left_;
-  std::vector<MsgPose> free_spots_right_;
+  std::vector<SpotDetectionPose> spot_detections_on_left_;
+  std::vector<SpotDetectionPose> spot_detections_on_right_;
 
   std::mutex pose_mutex_;
   MsgPose current_pose_;
   
+  std::mutex imu_mutex_;
+  float current_imu_orientation_; 
 
   std::mutex laser_mutex_;
   std::vector<float> current_laser_readings_left_;
   std::vector<float> current_laser_readings_right_;
 
   rclcpp::Subscription<MsgLaserScan>::SharedPtr sub_laser_scan_;
-  rclcpp::Subscription<MsgPoseWithCovarience>::SharedPtr sub_amcl_pose_;
-  // rclcpp::Service<SrvFreeSpots>::SharedPtr srv_free_spots_;
+  rclcpp::Subscription<MsgImu>::SharedPtr sub_imu_;
+  rclcpp::Subscription<MsgOdom>::SharedPtr sub_odom_;
 
   rclcpp::CallbackGroup::SharedPtr cb_group_reeterant_;
   rclcpp::CallbackGroup::SharedPtr cb_group_mutually_exclusive_;

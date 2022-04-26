@@ -1,6 +1,6 @@
 ---
-geometry_msgs/Pose[] left_side_spots
-geometry_msgs/Pose[] right_side_spots
+geometry_msgs/Point[] left_column_spots
+geometry_msgs/Point[] right_column_spots
 int32 result_code
 string result_string
 #Possible statuses

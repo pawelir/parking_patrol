@@ -66,6 +66,7 @@ find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(nav_msgs REQUIRED)
 include_directories(include)
 
 add_executable(
@@ -73,7 +74,6 @@ add_executable(
   src/parking_patrol.cpp
   src/ros/spot_finder_node.cpp
   src/ros/parking_patrol_node.cpp
-  src/classes/spot_finder.cpp
 )
 
 ament_target_dependencies(parking_patrol
@@ -84,6 +84,7 @@ ament_target_dependencies(parking_patrol
   "sensor_msgs"
   "geometry_msgs"
   "std_srvs"
+  "nav_msgs"
   )
 
 install(TARGETS parking_patrol

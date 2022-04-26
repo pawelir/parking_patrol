@@ -19,7 +19,7 @@ def generate_launch_description():
         config = yaml.safe_load(config_o)
     ros_param = config['/**']['ros__parameters']
 
-    controllers_node = Node(
+    parking_patrol = Node(
         package='parking_patrol',
         executable='parking_patrol',
         parameters=[ros_param],
@@ -30,6 +30,6 @@ def generate_launch_description():
         emulate_tty= 'true'
     )
 
-    ld.add_action(controllers_node)
+    ld.add_action(parking_patrol)
 
     return ld
