@@ -12,7 +12,6 @@ endif ()
 set(GCC_COVERAGE_COMPILE_FLAGS "-pthread -DBOOST_ERROR_CODE_HEADER_ONLY -BOOST_SYSTEM_NO_DEPRECATED")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
 
-# find_package(PkgConfig REQUIRED)
 find_package(ament_cmake REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(parking_patrol_msgs REQUIRED)

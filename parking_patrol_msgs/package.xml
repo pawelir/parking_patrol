@@ -4,12 +4,11 @@
   <name>parking_patrol_msgs</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="pawel.irzyk@fitech.pl">pawirz</maintainer>
+  <maintainer email="pawel.irzyk6@gmail.com">pawirz</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
-
 
   <depend>geometry_msgs</depend>
 
