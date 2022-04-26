@@ -62,8 +62,6 @@ void ParkingPatrolNode::finish_patrol_cb_(
   RCLCPP_DEBUG(get_logger(), "Processing request for /finish_patrol service");
   try {
     auto spot_detections = spot_finder_node_->get_detections(); 
-    filter_multiple_detections(spot_detections.at(side::LEFT));
-    filter_multiple_detections(spot_detections.at(side::RIGHT));
     auto matched_detections = match_detections_to_columns(spot_detections);
     res->left_column_spots = matched_detections.first;
     res->right_column_spots = matched_detections.second;
@@ -73,20 +71,6 @@ void ParkingPatrolNode::finish_patrol_cb_(
     res->result_string = error.what();
   }
   RCLCPP_DEBUG(get_logger(), "Finished /finish_patrol service");
-}
-
-std::vector<SpotDetectionPose> ParkingPatrolNode::filter_multiple_detections(std::vector<SpotDetectionPose> &detections) {
-  std::vector<SpotDetectionPose> filtered_detections;
-  std::optional<SpotDetectionPose> last_detection;
-
-  for (auto detection : detections) {
-    if ( !last_detection || abs(detection.x - last_detection.value().x) <= spot_width_ ) {
-      filtered_detections.push_back(detection);
-    } else {
-      filtered_detections.push_back(detection);
-    } last_detection = detection;
-  return filtered_detections;
-  }
 }
 
 std::pair<std::vector<MsgPoint>, std::vector<MsgPoint>> ParkingPatrolNode::match_detections_to_columns(

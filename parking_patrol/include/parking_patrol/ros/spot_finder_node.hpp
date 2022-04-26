@@ -1,8 +1,10 @@
 #ifndef PARKING_PATROL_SPOT_FINDER_NODE_HPP
 #define PARKING_PATROL_SPOT_FINDER_NODE_HPP
 
-#include <rclcpp/rclcpp.hpp>
+#include <algorithm>
 #include <mutex>
+#include <rclcpp/rclcpp.hpp>
+
 #include <geometry_msgs/msg/pose.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <sensor_msgs/msg/imu.hpp>
@@ -12,8 +14,8 @@
 namespace parkingpatrol {
 using MsgImu = sensor_msgs::msg::Imu;
 using MsgLaserScan = sensor_msgs::msg::LaserScan;
-using MsgPose = geometry_msgs::msg::Pose;
 using MsgOdom = nav_msgs::msg::Odometry;
+using MsgPose = geometry_msgs::msg::Pose;
 
 namespace side {
 static constexpr char LEFT[] = "LEFT";
@@ -47,7 +49,7 @@ class SpotFinderNode : public rclcpp::Node {
   void laser_scan_cb(const std::shared_ptr<MsgLaserScan> msg);
 
   std::vector<float> select_readings(const std::string &side_name,
-                                         const std::vector<float> &lidar_readings);
+                                     const std::vector<float> &lidar_readings);
 
   void imu_cb(const std::shared_ptr<MsgImu> msg);
 
@@ -55,8 +57,12 @@ class SpotFinderNode : public rclcpp::Node {
 
   bool detected_free_spot(const std::vector<float> &laser_readings);
 
+  bool multiple_detection(const std::string &detection_side, float position_x);
+
   float spot_depth_;
+  float spot_width_;
   float lidar_angular_resolution_;
+  
   std::map<std::string, std::array<int, 2>> lidar_range_map_;
 
   std::vector<SpotDetectionPose> spot_detections_on_left_;

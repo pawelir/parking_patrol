@@ -1,6 +1,5 @@
 #include "parking_patrol/ros/spot_finder_node.hpp"
-#include <geometry_msgs/msg/pose_with_covariance.hpp>
-#include <algorithm>
+
 namespace parkingpatrol {
 
 SpotFinderNode::SpotFinderNode() : Node("spot_finder_node") {
@@ -8,6 +7,7 @@ SpotFinderNode::SpotFinderNode() : Node("spot_finder_node") {
   declare_parameters();
 
   this->get_parameter<float>("spot_depth", spot_depth_);
+	this->get_parameter<float>("spot_width", spot_width_);
 	this->get_parameter<float>("lidar_angular_resolution", lidar_angular_resolution_);
 
 	calculate_lidar_range_map();
@@ -41,7 +41,7 @@ SpotFinderNode::SpotFinderNode() : Node("spot_finder_node") {
       std::bind(&SpotFinderNode::imu_cb, this, _1),
       sub_options);
 
-	timer_ = this->create_wall_timer(std::chrono::milliseconds(100),
+	timer_ = this->create_wall_timer(std::chrono::milliseconds(1000),
 																	 std::bind(&SpotFinderNode::timer_callback,
 																	 this));
 
@@ -50,6 +50,7 @@ SpotFinderNode::SpotFinderNode() : Node("spot_finder_node") {
 
 void SpotFinderNode::declare_parameters() {
   this->declare_parameter<float>("spot_depth", spot_depth_);
+  this->declare_parameter<float>("spot_width", spot_width_);
 	this->declare_parameter<float>("lidar_angular_resolution", lidar_angular_resolution_);
 }
 
@@ -99,19 +100,33 @@ void SpotFinderNode::timer_callback() {
 	try {
 		if (detected_free_spot(laser_readings_left)) {
 			std::scoped_lock {pose_mutex_, imu_mutex_};
-			spot_detections_on_left_.emplace_back(
-					SpotDetectionPose(current_pose_.position.x,
-														current_pose_.position.y,
-														current_imu_orientation_));
-		} if (detected_free_spot(laser_readings_right)) {
+			if (!multiple_detection(side::LEFT, current_pose_.position.x)) {
+				spot_detections_on_left_.emplace_back(
+						SpotDetectionPose(current_pose_.position.x,
+															current_pose_.position.y,
+															current_imu_orientation_));
+			}
+		} 
+		
+		if (detected_free_spot(laser_readings_right)) {
 			std::scoped_lock {pose_mutex_, imu_mutex_};
-			spot_detections_on_right_.emplace_back(
-					SpotDetectionPose(current_pose_.position.x,
-									current_pose_.position.y,
-									current_imu_orientation_));
+			if (!multiple_detection(side::RIGHT, current_pose_.position.x)) {
+				spot_detections_on_right_.emplace_back(
+						SpotDetectionPose(current_pose_.position.x,
+															current_pose_.position.y,
+															current_imu_orientation_));
+			}
 		}
 	} catch(const std::exception& e) {
 		RCLCPP_WARN(this->get_logger(), e.what());
+	}
+	std::cout << "LEFT: " << std::endl;
+	for (auto element : spot_detections_on_left_){
+		std::cout << element.x<< std::endl;
+	}
+	std::cout << "RIGHT: " <<  std::endl;
+	for (auto element : spot_detections_on_right_){
+		std::cout << element.x<< std::endl;
 	}
 }
 
@@ -121,6 +136,19 @@ bool SpotFinderNode::detected_free_spot(const std::vector<float> &lidar_readings
 													   lidar_readings.end()) >= spot_depth_;
 	} else throw std::invalid_argument( "No LiDAR readings!" );
 }
+
+bool SpotFinderNode::multiple_detection(const std::string &detection_side, float position_x) {
+	if (detection_side == side::LEFT) {
+		if (spot_detections_on_left_.size() == 0 || abs(spot_detections_on_left_.back().x - position_x) >= spot_width_) {
+			return false;
+		}
+	} if (detection_side == side::RIGHT) {
+		if (spot_detections_on_right_.size() == 0 || abs(spot_detections_on_right_.back().x - position_x) >= spot_width_) {
+			return false;
+		}
+	} return true;
+}
+
 
 void SpotFinderNode::clear_detection_buffer() {
 	spot_detections_on_left_.clear();

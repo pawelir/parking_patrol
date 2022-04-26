@@ -51,8 +51,6 @@ class ParkingPatrolNode : public rclcpp::Node {
     {TOLERANCE, 0.1},
   };
 
-  std::vector<SpotDetectionPose> filter_multiple_detections(std::vector<SpotDetectionPose> &detections);
-
   std::pair<std::vector<MsgPoint>, std::vector<MsgPoint>> match_detections_to_columns(
       const std::map<std::string, std::vector<SpotDetectionPose>> &detections);
 
