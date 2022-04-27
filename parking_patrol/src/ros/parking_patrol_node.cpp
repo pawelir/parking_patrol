@@ -63,18 +63,17 @@ ParkingPatrolNode::match_detections_to_columns(
   std::vector<MsgPoint> left_column_spots;
   std::vector<MsgPoint> right_column_spots;
 
-  for (auto detection : detections.at(side::LEFT)) {
+  for (auto &detection : detections.at(side::LEFT)) {
     if (abs(abs(detection.theta) - orientation_map_.at(direction::UP)) <=
         orientation_map_.at(direction::TOLERANCE)) {
       left_column_spots.push_back(msg_point_from_detection(detection));
     } else if (abs(abs(detection.theta) - orientation_map_.at(direction::DOWN)) <=
                orientation_map_.at(direction::TOLERANCE)) {
       right_column_spots.push_back(msg_point_from_detection(detection));
-      std::cout << "2" << std::endl;
     }
   }
 
-  for (auto detection : detections.at(side::RIGHT)) {
+  for (auto &detection : detections.at(side::RIGHT)) {
     if (abs(abs(detection.theta) - orientation_map_.at(direction::UP)) <=
         orientation_map_.at(direction::TOLERANCE)) {
       right_column_spots.push_back(msg_point_from_detection(detection));

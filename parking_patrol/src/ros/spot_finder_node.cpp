@@ -113,15 +113,15 @@ void SpotFinderNode::timer_callback() {
   try {
     if (detected_free_spot(laser_readings_left)) {
       if (!multiple_detection(side::LEFT, position_x)) {
-        spot_detections_on_left_.emplace_back(
-            SpotDetectionPose(position_x, position_y, orientation));
+        spot_detections_on_left_.emplace_back(position_x, position_y,
+                                              orientation);
       }
     }
 
     if (detected_free_spot(laser_readings_right)) {
       if (!multiple_detection(side::RIGHT, position_x)) {
-        spot_detections_on_right_.emplace_back(
-            SpotDetectionPose(position_x, position_y, orientation));
+        spot_detections_on_right_.emplace_back(position_x, position_y,
+                                               orientation);
       }
     }
   }
