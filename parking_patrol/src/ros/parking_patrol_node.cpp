@@ -59,7 +59,8 @@ void ParkingPatrolNode::finish_patrol_cb_(
 
 std::pair<std::vector<MsgPoint>, std::vector<MsgPoint>>
 ParkingPatrolNode::match_detections_to_columns(
-    const std::map<std::string, std::vector<SpotDetectionPose>> &detections) {
+    const std::unordered_map<std::string, std::vector<SpotDetectionPose>>
+        &detections) {
   std::vector<MsgPoint> left_column_spots;
   std::vector<MsgPoint> right_column_spots;
 
@@ -67,7 +68,8 @@ ParkingPatrolNode::match_detections_to_columns(
     if (abs(abs(detection.theta) - orientation_map_.at(direction::UP)) <=
         orientation_map_.at(direction::TOLERANCE)) {
       left_column_spots.push_back(msg_point_from_detection(detection));
-    } else if (abs(abs(detection.theta) - orientation_map_.at(direction::DOWN)) <=
+    } else if (abs(abs(detection.theta) -
+                   orientation_map_.at(direction::DOWN)) <=
                orientation_map_.at(direction::TOLERANCE)) {
       right_column_spots.push_back(msg_point_from_detection(detection));
     }
@@ -77,7 +79,8 @@ ParkingPatrolNode::match_detections_to_columns(
     if (abs(abs(detection.theta) - orientation_map_.at(direction::UP)) <=
         orientation_map_.at(direction::TOLERANCE)) {
       right_column_spots.push_back(msg_point_from_detection(detection));
-    } else if (abs(abs(detection.theta) - orientation_map_.at(direction::DOWN)) <=
+    } else if (abs(abs(detection.theta) -
+                   orientation_map_.at(direction::DOWN)) <=
                orientation_map_.at(direction::TOLERANCE)) {
       left_column_spots.push_back(msg_point_from_detection(detection));
     }
