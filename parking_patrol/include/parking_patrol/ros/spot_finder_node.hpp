@@ -25,7 +25,8 @@ public:
 
   void clear_detection_buffer();
 
-  std::map<std::string, std::vector<SpotDetectionPose>> get_detections();
+  std::unordered_map<std::string, std::vector<SpotDetectionPose>>
+  get_detections();
 
 private:
   void declare_parameters();

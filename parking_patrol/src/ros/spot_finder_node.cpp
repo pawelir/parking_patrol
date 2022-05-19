@@ -111,18 +111,15 @@ void SpotFinderNode::timer_callback() {
   }
 
   try {
-    if (detected_free_spot(laser_readings_left)) {
-      if (!multiple_detection(side::LEFT, position_x)) {
-        spot_detections_on_left_.emplace_back(position_x, position_y,
-                                              orientation);
-      }
+    if (detected_free_spot(laser_readings_left) &&
+        !multiple_detection(side::LEFT, position_x)) {
+      spot_detections_on_left_.emplace_back(position_x, position_y,
+                                            orientation);
     }
-
-    if (detected_free_spot(laser_readings_right)) {
-      if (!multiple_detection(side::RIGHT, position_x)) {
-        spot_detections_on_right_.emplace_back(position_x, position_y,
-                                               orientation);
-      }
+    if (detected_free_spot(laser_readings_right) &&
+        !multiple_detection(side::RIGHT, position_x)) {
+      spot_detections_on_right_.emplace_back(position_x, position_y,
+                                             orientation);
     }
   }
 
@@ -162,9 +159,9 @@ void SpotFinderNode::clear_detection_buffer() {
   spot_detections_on_right_.clear();
 }
 
-std::map<std::string, std::vector<SpotDetectionPose>>
+std::unordered_map<std::string, std::vector<SpotDetectionPose>>
 SpotFinderNode::get_detections() {
-  return std::map<std::string, std::vector<SpotDetectionPose>>{
+  return std::unordered_map<std::string, std::vector<SpotDetectionPose>>{
       {side::LEFT, spot_detections_on_left_},
       {side::RIGHT, spot_detections_on_right_}};
 }

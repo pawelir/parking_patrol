@@ -33,7 +33,8 @@ private:
 
   std::pair<std::vector<MsgPoint>, std::vector<MsgPoint>>
   match_detections_to_columns(
-      const std::map<std::string, std::vector<SpotDetectionPose>> &detections);
+      const std::unordered_map<std::string, std::vector<SpotDetectionPose>>
+          &detections);
 
   MsgPoint msg_point_from_detection(const SpotDetectionPose &detection);
 
