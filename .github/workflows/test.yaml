@@ -10,3 +10,9 @@ jobs:
         run: echo "SSSSSSSS"
       - name: Echo task 2
         run: echo 'WWWWWWWw'
+
+  second_job:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: List directory
+        run: ls 
