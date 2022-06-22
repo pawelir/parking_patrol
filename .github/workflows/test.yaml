@@ -1,0 +1,12 @@
+name: Pawel's first github action
+
+on: push
+
+jobs:
+  My test job:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Echo task
+        run: echo "SSSSSSSS"
+      - name: Echo task 2
+        run: echo 'WWWWWWWw'
