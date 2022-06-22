@@ -1,9 +1,9 @@
-name: Pawel's first github action
+name: Test workflow
 
 on: push
 
 jobs:
-  My test job:
+  first_job:
     runs-on: ubuntu-20.04
     steps:
       - name: Echo task
