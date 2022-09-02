@@ -11,10 +11,9 @@ jobs:
 
     steps:
       - uses: ros-tooling/setup-ros@v0.3
+        with:
+          required-ros-distributions: foxy
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
           package-name: parking_patrol
           target-ros2-distro: foxy
-          vcs-repo-file-url: https://raw.githubusercontent.com/ros2/ros2/humble/ros2.repos
-
-#test
