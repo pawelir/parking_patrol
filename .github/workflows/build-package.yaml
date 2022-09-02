@@ -15,5 +15,5 @@ jobs:
           required-ros-distributions: foxy
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
-          package-name: parking_patrol
+          package-name: parking_patrol_msgs parking_patrol
           target-ros2-distro: foxy
