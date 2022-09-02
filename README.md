@@ -64,10 +64,10 @@ ros2 service call /parking_patrol_node/restart_patrol std_srvs/srv/Trigger {}
 
 ***Notice:*** All ideas and bugs should be reported through GitHub Issues.
 
-#### **automation_node dependencies**
+#### **parking_patrol_node dependencies**
 
-| Package        | Node      | Path                                       | Type           | Definition                                  |
-| -------------- | --------- | ------------------------------------------ | -------------- | ------------------------------------------- |
-| ParkingPatrol  | spot_finder_node | `/imu`                              | Subscriber     | Imu msg                               |
-| ParkingPatrol  | spot_finder_node | `/odom`                             | Subscriber     | Odom msg                               |
-| ParkingPatrol  | spot_finder_node | `/laser/scan`                       | Subscriber     | LaserScan msg                               |
+| Package       | Node             | Path          | Type       | Definition    |
+| ------------- | ---------------- | ------------- | ---------- | ------------- |
+| ParkingPatrol | spot_finder_node | `/imu`        | Subscriber | Imu msg       |
+| ParkingPatrol | spot_finder_node | `/odom`       | Subscriber | Odom msg      |
+| ParkingPatrol | spot_finder_node | `/laser/scan` | Subscriber | LaserScan msg |
