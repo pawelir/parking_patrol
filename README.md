@@ -71,3 +71,5 @@ ros2 service call /parking_patrol_node/restart_patrol std_srvs/srv/Trigger {}
 | ParkingPatrol | spot_finder_node | `/imu`        | Subscriber | Imu msg       |
 | ParkingPatrol | spot_finder_node | `/odom`       | Subscriber | Odom msg      |
 | ParkingPatrol | spot_finder_node | `/laser/scan` | Subscriber | LaserScan msg |
+
+test
