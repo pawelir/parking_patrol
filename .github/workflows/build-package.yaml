@@ -6,7 +6,7 @@ on:
       - "technical/create_workflow"
 
 jobs:
-  build-msgs:
+  build:
     runs-on: ubuntu-20.04
 
     steps:
@@ -15,21 +15,21 @@ jobs:
           required-ros-distributions: foxy
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
-          package-name: parking_patrol_msgs
+          # package-name: parking_patrol_msgs
           target-ros2-distro: foxy
 
-  build-parking-patrol:
-    runs-on: ubuntu-20.04
-    needs:
-      - build-msgs
-    steps:
-      - uses: ros-tooling/setup-ros@v0.3
-        with:
-          required-ros-distributions: foxy
-      - uses: ros-tooling/action-ros-ci@v0.2
-        with:
-          package-name: parking_patrol
-          target-ros2-distro: foxy
+  # build-parking-patrol:
+  #   runs-on: ubuntu-20.04
+  #   needs:
+  #     - build-msgs
+  #   steps:
+  #     - uses: ros-tooling/setup-ros@v0.3
+  #       with:
+  #         required-ros-distributions: foxy
+  #     - uses: ros-tooling/action-ros-ci@v0.2
+  #       with:
+  #         package-name: parking_patrol
+  #         target-ros2-distro: foxy
 
 
 # name: ROS2 test builds and trigger dependent repositories
