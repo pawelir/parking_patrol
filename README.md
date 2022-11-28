@@ -1,73 +1,85 @@
-# Parking Patrol
+# parking_patrol
 
----
+This package functionality is to detect free spots on the parking site. Provides API for retrieving coordinates of detected free parking places.
 
-## Synopsis
+## Building from Source
 
-Parking patrol provides functionality to detect free spots on parking sites.
+[![Source build](https://github.com/pawelir/parking_patrol/actions/workflows/colcon-test-build.yaml/badge.svg)](https://github.com/pawelir/parking_patrol/actions/workflows/colcon-test-build.yaml)
 
-## Highlights
+### Dependencies
 
-* Parking patrol allows specifying the parking details: it can be read from
-  the `parking_patrol.yaml`.
+External dependencies:
 
----
-
-## Installation and running
+* `geometry_msgs`
+* `nav_msgs`
+* `sensor_msgs`
+* `std_srvs`
 
 ### Building
 
-To build and install project proceed with ROS2 **colcon** command:
+To build from source, clone the latest version from the repository into your workspace and compile the package using:
 
 ```bash
+cd workspace/src
+git clone https://github.com/pawelir/parking_patrol.git
+cd ../
+rosdep update
+rosdep install -i --from-paths src -y
 colcon build --symlink-install
 ```
 
-For unit testing, execute it with CMake arguments:
+_**Note:** ROS should be sourced before: `source /opt/ros/<your-distro>/setup.bash`_
 
-```bash
- colcon build --cmake-args -DBUILD_TESTING=ON
-```
+## Usage
 
-**Note:** Remember to source the project (`source ./install/local_setup.zsh`) before running!
-
-
----
-### Launch Parking Patrol
-
-It is possible to use the following command in order to launch two nodes responsible for spot detection:
+Launch the core functionality with:
 
 ```bash
 ros2 launch parking_patrol parking_patrol.launch.py
 ```
 
----
+### Config files
 
-## ROS2 interaction from CLI examples
+* **parking_patrol.yaml** - config file allowing the node parameters settings
 
-### Services
+### Launch files
 
-* `/parking_patrol_node/finish_patrol`
+* **parking_patrol.launch.py** - main launch file launching the whole functionality
 
-```bash
-ros2 service call /parking_patrol_node/finish_patrol parking_patrol_msgs/srv/FreeSpots {}
+## Nodes
 
-```
+### parking_patrol_node
 
-* `/parking_patrol_node/restart_patrol`
+High level node providing API for restarting detection process and retrieving the data after scanning.
 
-```bash
-ros2 service call /parking_patrol_node/restart_patrol std_srvs/srv/Trigger {}
-```
+#### Service servers
 
-# Developer notes
+* **`~/restart_patrol`** _std_srvs/Trigger_ - Trigger cleaning detection buffer
 
-***Notice:*** All ideas and bugs should be reported through GitHub Issues.
+  ```bash
+  ros2 service call /parking_patrol_node/restart_patrol std_srvs/srv/Trigger "{}"
+  ```
 
-#### **parking_patrol_node dependencies**
+* **`~/finish_patrol`** _parking_patrol_msgs/FreeSpots_ - Get detected parking spots
 
-| Package       | Node             | Path          | Type       | Definition    |
-| ------------- | ---------------- | ------------- | ---------- | ------------- |
-| ParkingPatrol | spot_finder_node | `/imu`        | Subscriber | Imu msg       |
-| ParkingPatrol | spot_finder_node | `/odom`       | Subscriber | Odom msg      |
-| ParkingPatrol | spot_finder_node | `/laser/scan` | Subscriber | LaserScan msg |
+  ```bash
+  ros2 service call /parking_patrol_node/finish_patrol parking_patrol_msgs/srv/FreeSpots "{}"
+  ```
+
+#### Parameters
+
+| Name                       | Type  | Default value | Description                                                                              |
+| -------------------------- | ----- | ------------- | ---------------------------------------------------------------------------------------- |
+| `lidar_angular_resolution` | float | 1.0           | LIDAR angular resolution - depends on your simulation settings or hardware specification |
+| `spot_depth`               | float | 0.7           | Spot characteristics - spot depth [m]                                                    |
+| `spot_width`               | float | 0.4           | Spot characteristics - spot width [m]                                                    |
+
+### spot_finder_node
+
+Node responsible only for detecting free spots in the neighborhood.
+
+#### Subscribed Topics
+
+* **`/odom`** _nav_msgs/msg/Odometry_
+* **`/scan`** _sensor_msgs/msg/LaserScan_
+* **`/imu`** _sensor_msgs/msg/Imu_
