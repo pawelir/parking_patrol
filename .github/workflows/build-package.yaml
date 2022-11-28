@@ -1,65 +1,17 @@
-name: Colcon build
+name: Colcon test build
 
 on:
   push:
     branches:
-      - "technical/create_workflow"
+      - "master"
 
 jobs:
   build:
     runs-on: ubuntu-20.04
-
     steps:
       - uses: ros-tooling/setup-ros@v0.3
         with:
           required-ros-distributions: foxy
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
-          # package-name: parking_patrol_msgs
           target-ros2-distro: foxy
-
-  # build-parking-patrol:
-  #   runs-on: ubuntu-20.04
-  #   needs:
-  #     - build-msgs
-  #   steps:
-  #     - uses: ros-tooling/setup-ros@v0.3
-  #       with:
-  #         required-ros-distributions: foxy
-  #     - uses: ros-tooling/action-ros-ci@v0.2
-  #       with:
-  #         package-name: parking_patrol
-  #         target-ros2-distro: foxy
-
-
-# name: ROS2 test builds and trigger dependent repositories
-
-# on:
-#   push:
-#     branches:
-#       - "main"
-
-# jobs:
-#   colcon-test-build:
-#     strategy:
-#       fail-fast: true
-#       matrix:
-#         linux-version: [ubuntu-20.04]
-#         ros-distro: [foxy, galactic]
-#         include:
-#           - linux-version: ubuntu-22.04
-#             ros-distro: humble
-#     runs-on: ${{ matrix.linux-version }}
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v3
-#         with:
-#           ref: ${{ github.ref }}
-#       - uses: ros-tooling/setup-ros@v0.3
-#         with:
-#           required-ros-distributions: ${{ matrix.ros-distro }}
-#       - uses: ros-tooling/action-ros-ci@v0.2
-#         with:
-#           import-token: ${{ secrets.GH_PAT }}
-#           package-name: pempek_msgs
-#           target-ros2-distro: ${{ matrix.ros-distro }}
