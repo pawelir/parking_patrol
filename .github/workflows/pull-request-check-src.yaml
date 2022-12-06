@@ -5,8 +5,7 @@ on:
     branches:
       - "master"
     paths:
-      - '**.cpp'
-      - '**.hpp'
+      -"'parking_patrol/src/**"
 
 jobs:
   build:
