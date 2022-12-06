@@ -2,8 +2,8 @@ name: Colcon test build
 on:
   pull_request:
     paths-ignore:
-      - "**.cpp"
-      - "**.hpp"
+      - "parking_patrol/**"
+      - "parking_patrol_msgs/**"
 
 jobs:
   build:
