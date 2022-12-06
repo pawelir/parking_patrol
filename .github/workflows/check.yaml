@@ -1,0 +1,17 @@
+name: Colcon test build [foxy]
+
+on:
+  pull_request:
+#     branches:
+#       - "master"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: ros-tooling/setup-ros@v0.3
+        with:
+          required-ros-distributions: foxy
+      - uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          target-ros2-distro: foxy
