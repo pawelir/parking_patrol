@@ -1,9 +1,12 @@
-name: Colcon test build [foxy]
+name: Colcon test build
 
 on:
   pull_request:
-#     branches:
-#       - "master"
+    branches:
+      - "master"
+    paths:
+      - '**.cpp'
+      - '**.hpp'
 
 jobs:
   build:
