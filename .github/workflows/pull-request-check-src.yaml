@@ -5,8 +5,8 @@ on:
     branches:
       - "master"
     paths:
-      -"**.cpp"
-      -"**.hpp"
+      -"parking_patrol/**"
+      -"parking_patrol_msgs/**"
 
 jobs:
   build:
