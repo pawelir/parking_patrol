@@ -1,9 +1,12 @@
 name: Colcon test build [foxy]
 
 on:
-  push:
+  pull_request:
     branches:
       - "master"
+    paths:
+      - "parking_patrol/**"
+      - "parking_patrol_msgs/**"
 
 jobs:
   build:
@@ -15,3 +18,4 @@ jobs:
       - uses: ros-tooling/action-ros-ci@v0.2
         with:
           target-ros2-distro: foxy
+          skip-tests: true

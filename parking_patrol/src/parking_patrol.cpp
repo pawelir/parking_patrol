@@ -11,7 +11,7 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
 
   std::cout << "|=======================================|\n"
-               "|   Parking Patrol   ||   Pawel Irzyk   |\n"
+               "|   Parking Patrol   ||   Paweł Irzyk   |\n"
                "|=======================================|\n"
                "[ParkingPatrol] Initializing ROS..."
             << std::endl;
