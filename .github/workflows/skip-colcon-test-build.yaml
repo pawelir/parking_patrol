@@ -1,0 +1,13 @@
+name: Skip colcon test build
+
+on:
+  pull_request:
+    paths-ignore:
+      - "parking_patrol/**"
+      - "parking_patrol_msgs/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: 'echo "No build required"'
