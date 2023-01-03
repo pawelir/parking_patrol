@@ -1,9 +1,12 @@
 name: Colcon test build [foxy]
 
 on:
-  push:
+  pull_request:
     branches:
       - "master"
+    paths:
+      - "parking_patrol/**"
+      - "parking_patrol_msgs/**"
 
 jobs:
   build:
